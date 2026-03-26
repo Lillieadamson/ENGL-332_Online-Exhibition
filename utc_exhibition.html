@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uncle Tom's Cabin, 1887 — An Online Exhibition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1208;
+    --paper: #f5f0e8;
+    --cream: #ede7d5;
+    --rust: #8b3a1a;
+    --gold: #b8873a;
+    --muted: #6b5c42;
+    --rule: #c9b99a;
+    --white: #faf8f3;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.75;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 3.5rem 2rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(255,255,255,0.03) 3px,
+      rgba(255,255,255,0.03) 4px
+    );
+    pointer-events: none;
+  }
+  .header-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--white);
+    max-width: 750px;
+    margin: 0 auto 0.6rem;
+  }
+  header h1 em {
+    font-style: italic;
+    color: #e8d9b8;
+  }
+  .header-sub {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: #c9b99a;
+    margin-top: 0.8rem;
+  }
+  .header-rule {
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+    margin: 1.8rem auto;
+    opacity: 0.7;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--cream);
+    border-bottom: 1px solid var(--rule);
+    border-top: 1px solid var(--rule);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  nav ul {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  nav ul li a {
+    display: block;
+    padding: 0.75rem 1.1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+  nav ul li a:hover { color: var(--rust); }
+
+  /* ── LAYOUT ── */
+  main { max-width: 780px; margin: 0 auto; padding: 0 1.5rem 5rem; }
+
+  section {
+    padding-top: 4.5rem;
+    border-top: 1px solid var(--rule);
+    margin-top: 4rem;
+  }
+  section:first-of-type { border-top: none; margin-top: 2.5rem; }
+
+  .section-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+  section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+  section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    font-style: italic;
+    margin: 2.2rem 0 0.8rem;
+    color: var(--rust);
+  }
+
+  p { margin-bottom: 1.3rem; }
+
+  /* ── IMAGE PLACEHOLDERS ── */
+  .image-block {
+    margin: 2.2rem 0;
+  }
+  .img-placeholder {
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    padding: 2rem;
+    text-align: center;
+  }
+  .img-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .img-row.three { grid-template-columns: 1fr 1fr 1fr; }
+  figcaption {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 0.5rem;
+    font-style: italic;
+    line-height: 1.4;
+  }
+  figure { margin: 2rem 0; }
+
+  /* ── BLOCKQUOTE ── */
+  blockquote {
+    border-left: 3px solid var(--gold);
+    margin: 2rem 0 2rem 0;
+    padding: 0.5rem 0 0.5rem 1.6rem;
+    font-style: italic;
+    color: var(--muted);
+    font-size: 1.05rem;
+  }
+  blockquote cite {
+    display: block;
+    margin-top: 0.6rem;
+    font-style: normal;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    color: var(--gold);
+  }
+
+  /* ── OBJECT FACTS CARD ── */
+  .object-card {
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    padding: 1.6rem 1.8rem;
+    margin: 2rem 0;
+  }
+  .object-card h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .object-card dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.35rem 1.4rem;
+  }
+  .object-card dt {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--muted);
+    white-space: nowrap;
+    padding-top: 0.1rem;
+  }
+  .object-card dd {
+    font-size: 0.92rem;
+    color: var(--ink);
+  }
+
+  /* ── BIBLIOGRAPHY ── */
+  .bibliography ol {
+    padding-left: 1.5rem;
+  }
+  .bibliography li {
+    font-size: 0.9rem;
+    margin-bottom: 0.9rem;
+    color: var(--ink);
+    line-height: 1.55;
+  }
+  .bibliography li span.bib-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    color: var(--muted);
+    padding: 0.1rem 0.45rem;
+    margin-right: 0.4rem;
+    letter-spacing: 0.05em;
+    vertical-align: middle;
+  }
+
+  /* ── REFLECTION BOX ── */
+  .reflection-box {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2.5rem 2.2rem;
+    margin: 2rem 0;
+  }
+  .reflection-box p { color: #d4c9b0; margin-bottom: 1.1rem; }
+  .reflection-box p:last-child { margin-bottom: 0; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--cream);
+    border-top: 1px solid var(--rule);
+    padding: 2rem;
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  sup.fn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    color: var(--rust);
+    cursor: default;
+  }
+
+  @media (max-width: 600px) {
+    .img-row, .img-row.three { grid-template-columns: 1fr; }
+    nav ul li a { padding: 0.6rem 0.7rem; font-size: 0.7rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="header-eyebrow">Online Exhibition · History of the Book</p>
+  <h1><em>Uncle Tom's Cabin</em> in Print</h1>
+  <div class="header-rule"></div>
+  <p class="header-sub">The Houghton Mifflin Edition of 1887: Materiality, Illustration, and a Novel's Second Life</p>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#publisher">Publisher</a></li>
+    <li><a href="#materiality">The Physical Book</a></li>
+    <li><a href="#illustrations">Illustrations</a></li>
+    <li><a href="#ecologies">Ecologies</a></li>
+    <li><a href="#provenance">Provenance</a></li>
+    <li><a href="#reflection">Reflection</a></li>
+    <li><a href="#bibliography">Bibliography</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 1: INTRODUCTION
+══════════════════════════════════════════════ -->
+<section id="introduction">
+  <p class="section-label">§ 1 — Introduction</p>
+  <h2>A Novel, Twice Born</h2>
+
+  <figure class="image-block">
+    <img src="images/book-cover.jpg" alt="Front cover of the 1887 Houghton Mifflin edition of Uncle Tom's Cabin" style="width:100%; object-fit:contain;">
+    <figcaption>The 1887 Houghton Mifflin edition of <em>Uncle Tom's Cabin</em>. Photograph by Lillie Adamson.</figcaption>
+  </figure>
+
+  <div class="object-card">
+    <h4>Object Description</h4>
+    <dl>
+      <dt>Title</dt>
+      <dd><em>Uncle Tom's Cabin; or, Life Among the Lowly</em></dd>
+      <dt>Author</dt>
+      <dd>Harriet Beecher Stowe (1811–1896)</dd>
+      <dt>Publisher</dt>
+      <dd>Houghton, Mifflin and Company, Boston</dd>
+      <dt>Printer</dt>
+      <dd>Riverside Press, Cambridge, MA</dd>
+      <dt>Date</dt>
+      <dd>1887</dd>
+      <dt>Format</dt>
+      <dd>500 pp.</dd>
+      <dt>Binding</dt>
+      <dd>Green cloth over cardboard boards, machine-sewn signatures with Smyth sewer, glued spine, cased binding.</dd>
+      <dt>Illustrations</dt>
+      <dd>Approximately 105 engravings (this copy has only the frontispiece engraving)</dd>
+      <dt>Price (as sold)</dt>
+      <dd>$1.00 (Popular Edition)</dd>
+    </dl>
+  </div>
+
+  <p>This exhibit considers one copy of the novel, published in 1887 by Houghton, Mifflin, and Company of Boston, thirty-five years after the novel's first publication in book form and nine years before the death of Harriet Beecher Stowe. The object in my hand is not, by any measure, a rarity. The novel had been for sale uninterruptedly since 1852, and by the late 1880s, the dollar edition of the novel, the form in which the object in front of us was published, had, according to the <em>Washington Post</em> correspondent writing in January 1887, already sold 75,000 copies. <sup class="fn">2</sup> But the very fact that the object in front of us was not remarkable in any way is what makes the 1887 edition of <em>Uncle Tom's Cabin</em> worth examining. It was not preserved because it was precious; it was preserved because it was used.</p>
+
+  <p>The main idea of this exhibition is that the physical form of this 1887 edition of <em>Uncle Tom's Cabin</em>—its paper, binding, type, and pictures—does not simply house Stowe's words but is itself a document of cultural repositioning. For by 1887, <em>Uncle Tom's Cabin</em> had moved from abolitionist bombshell to literary institution, from emergency to inheritance. The decisions that Houghton Mifflin made in how to produce this book—its price, its pictures—encode a particular set of assumptions about who will read it, how they will read it, and what they will bring to it. Reading this book as an object rather than as text alone allows us to track those assumptions with great particularity.</p>
+
+  <p>In doing so, I draw upon three different frameworks: one for American publishing as a cultural and economic relation (Winship, McVey, Parfait); one for books as objects and the role that materiality plays in them (Benjamin, Goldsby and McGill); and one for Stowe's position within literary culture and the domestic space from which she wrote (Hedrick). Each framework offers a different window into what this edition is and what it might mean. <sup class="fn">4,5,7,8,9,11</sup></p>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 2: PUBLISHER
+══════════════════════════════════════════════ -->
+<section id="publisher">
+  <p class="section-label">§ 2 — Publishing History</p>
+  <h2>From Jewett to Houghton: A Publisher's Journey</h2>
+
+  <div class="img-row">
+    <figure>
+      <img src="images/title-page.jpg" alt="Title page of the 1887 edition" style="width:100%; height:auto; object-fit:contain;">
+      <figcaption>Title page of the 1887 edition, bearing the Houghton Mifflin and Riverside Press imprint.</figcaption>
+    </figure>
+    <figure>
+      <img src="images/copyright-page.jpg" alt="Publisher's copyright page" style="width:100%; height:auto; object-fit:contain;">
+      <figcaption>Copyright page, indicating the Riverside Press, Cambridge, MA.</figcaption>
+    </figure>
+  </div>
+
+  <p>The publishing history of <em>Uncle Tom's Cabin</em> is a story in itself about the development and transformation of the American book trade. When <em>Uncle Tom's Cabin</em> first appeared in book form in March 1852, it was published by John P. Jewett &amp; Co. of Boston, a relatively small firm that had previously specialized in textbooks, religious works, and a handful of anti-slavery titles. As Claire Parfait documents in <em>The Publishing History of Uncle Tom's Cabin, 1852–2002</em>, Phillips, Sampson &amp; Co. had turned the novel down before Jewett accepted it, with partner William Lee reportedly convinced that an anti-slavery novel serialized in an abolitionist journal "would not sell a thousand copies" and fearing the firm would lose its Southern audience. Jewett, by contrast, had already published anti-slavery works and was willing to take the risk. The gamble paid off in a way that no one could have foreseen. Jewett advertised the sale of 10,000 copies in two weeks in <em>Norton's Literary Gazette</em>, describing three paper mills and three power presses running around the clock in a vain effort to meet demand; by June 1852 he had purchased an entire page in the same journal to announce 50,000 copies sold in eight weeks. <em>Uncle Tom's Cabin</em> had become something genuinely new in the American book trade. <sup class="fn">3,9</sup></p>
+
+  <p>Jewett's promotional campaign was itself remarkable. Parfait shows that Jewett pioneered what we might now call a marketing blitz, flooding newspapers with advertisements focused on a single title, exploiting sales figures as a promotional tool in a way that went far beyond what other publishers of the time were doing, and commissioning spin-off products including a song about Little Eva to drive further public attention to the novel. He published the novel in three editions almost simultaneously: a two-volume cloth edition aimed at the middle class, a cheap paper-covered edition for what Jewett called "the masses," and a lavish illustrated edition for the upper-middle class. This deliberate segmentation of the reading public by price and format was, Parfait argues, a significant innovation in American publishing. <sup class="fn">9</sup></p>
+
+  <p>Eventually, Jewett's success became its own undoing. The firm overexpanded, was left with large unsold stocks, and failed financially in 1857. The plates of <em>Uncle Tom's Cabin</em> passed through several hands before Ticknor and Fields acquired them in 1860, and the novel was reprinted steadily but without major new investment through the 1860s and 1870s. The rights to <em>Uncle Tom's Cabin</em> continued through successive imprints—Fields, Osgood &amp; Co., then James R. Osgood &amp; Co.—until the merger that created Houghton, Osgood &amp; Co. in 1878 and eventually Houghton, Mifflin &amp; Co. in 1880. By the 1880s, Houghton, Mifflin had become one of the most prestigious literary publishers in America, boasting a list of such notable authors as Emerson, Longfellow, Holmes, Lowell, and Whittier. <sup class="fn">9,11</sup></p>
+
+  <p>Most significantly, however, the 1887 publication was not only published by Houghton Mifflin but was also printed by the firm's own Riverside Press in Cambridge, Massachusetts. The Riverside Press was more than just a printing press; it was a statement of intent. To have a work printed by the Riverside Press was to make a statement about that work. Sheila McVey, in her work on the growth of the American publishing industry in the nineteenth century, writes that by the 1870s and 1880s, American publishers were finally in a position to amass the capital and cultural infrastructure that would enable them to be true arbiters of literary taste, rather than simply being purveyors of British imports. The Riverside Press was that infrastructure in physical form—a homegrown alternative to the great printing establishments in London and Edinburgh. <sup class="fn">8</sup></p>
+
+  <h3>The $1 Popular Edition and Its Market</h3>
+
+  <p>The 1887 edition published by Houghton Mifflin held a particular position within the market. An article in <em>The Washington Post</em>, dated January 16, 1887, penned by Eliza Putnam Heaton, reads in part: "Harriet Beecher Stowe's 'Uncle Tom's Cabin' has sold 75,000 copies in its popular $1 edition, and yet Dr. Hedge, in <em>The Forum</em> for this month, asserts that it is 'a once famous but now forgotten' work." The price is important here. Parfait's account of the Houghton Mifflin editions shows that the firm carefully managed a tiered approach to pricing: after launching the expensive "Holiday Edition" of 1879 at $3.50, illustrated with the Thomas and Macquoid engravings and accompanied by Stowe's new introduction and a bibliography by the British Museum's George Bullen, Houghton Mifflin followed it with a cheaper two-dollar version, and then in 1885 launched the "Popular Edition" at one dollar—the edition that is almost certainly the form in which this copy was published. The one-dollar edition was timed deliberately. Parfait records that sales of the two-dollar version had begun to flag by 1884, and the "Popular Edition" was the firm's swift response, selling over 30,000 copies in its first year of publication. <sup class="fn">2,9</sup></p>
+
+  <p>Katherine Bode's work on publishing history and serialization encourages us to think about the form of the text at the moment when it reaches the reader—as a serialized installment, a privileged first edition, a cheap reprint, or a canonical collected volume. The 1887 volume marks a specific moment in the history of <em>Uncle Tom's Cabin</em> as a book—not the emergency of 1852, nor the flood of 1893–96 after the lapse of copyright, but the interlude of the literary classic, widely read, democratically priced, but still under the aegis of a publishing authority. <sup class="fn">6</sup></p>
+
+  <figure class="image-block">
+    <img src="images/works-of-fiction.jpg" alt="Publisher's back matter" style="width:50%; height:auto; object-fit:contain; margin-left:150px;">
+    <figcaption>Publisher's back matter, situating <em>Uncle Tom's Cabin</em> within the Houghton Mifflin catalogue.</figcaption>
+  </figure>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 3: MATERIALITY
+══════════════════════════════════════════════ -->
+<section id="materiality">
+  <p class="section-label">§ 3 — Material Description</p>
+  <h2>The Physical Book: Paper, Binding, and Type</h2>
+
+  <div class="img-row">
+    <figure>
+      <img src="images/signatures.jpg" alt="Spine close up showing signatures" style="width:100%; height:auto; object-fit:contain;">
+      <figcaption>Spine close up — showing signatures.</figcaption>
+    </figure>
+    <figure>
+      <img src="images/to-window.jpg" alt="Paper held to natural light" style="width:100%; height:auto;">
+      <figcaption>Paper held to natural light.</figcaption>
+    </figure>
+  </div>
+
+  <h3>Reading the Binding</h3>
+
+  <p>The binding of the book is one of the most eloquent of the physical details. Even before the reader opens the cover of the book and begins to read the pages, the binding has already told the reader something about the intended place of the book in the world: its price, its intended audience, and its intended use and longevity. This book is bound in green cloth over cardboard boards, a hardcover "cased" binding using the machine-sewn signature process, which is associated with the use of the Smyth Sewing Machine, which had by the 1880s become the standard process in the book industry for trade editions. The signatures are also glued along the spine before casing. This particular combination of characteristics places the book firmly in the middle of the market, not the gilt decorated binding of a presentation copy. It is a book intended to be read and kept, not looked at. Parfait notes that Houghton Mifflin's various editions of <em>Uncle Tom's Cabin</em> in this period were available in cloth of various colors—green, brown, purple—and that the firm was careful never to compromise the legibility or layout of their editions even in cheaper forms, maintaining a standard of typography and presentation consistent with their house reputation. <sup class="fn">9</sup></p>
+
+  <p>Walter Benjamin's famous essay "The Work of Art in the Age of Mechanical Reproduction" provides tools for thinking about what this particular copy—this particular object—has that any digital image or transcription of its text can't begin to replicate. Benjamin's term for this is "aura," the "unique phenomenon of a distance" that clings to an original object because of its uniqueness in time and space. This copy of <em>Uncle Tom's Cabin</em> has been in a place for over 135 years. What it has seen—what shelves it has sat on, what hands have opened its pages, what light has faded its cover—is written on its very being in ways that can't be replicated digitally. The scuffed corner of its boards, the darkening of its pages at the edges, the cracking along its spine—all of this is history. <sup class="fn">4</sup></p>
+
+  <h3>Paper and Type</h3>
+
+  <p>One of the most important and least appreciated features of a nineteenth-century book is its paper. American publishers in the 1880s were feeling the effects of a large technological shift in the world around them. Wood pulp paper, which became the standard for books printed from the 1870s onwards, is much less expensive than rag paper but is chemically acidic and thus causes books printed on it to turn yellow and flake apart within decades. However, prestige publishers such as Houghton Mifflin knew that even for standard trade editions, better-quality paper could be used, and this is likely to be true for this book. The printing is on what is likely to be wood pulp paper, which became the standard and economic choice to replace rag paper in trade books from the 1870s onwards. The pages have turned distinctly yellow at the edges, which is characteristic of the acid in this type of paper. The paper is smooth rather than rough to the eye, suggesting that it is not laid but wove paper. <sup class="fn">9</sup></p>
+
+  <p>The typeface and page layout also deserve attention. The Riverside Press is known for its typography. The typeface is a Roman serif typeface, clean and traditional, and best suited for long texts. The page layout is single-column, with moderate margins and running headings, in keeping with the reputation for clear and well-proportioned typography at Riverside Press.</p>
+
+  <p>Goldsby &amp; McGill's call for "bibliographic thinking" as critical practice is directly relevant here. The 1887 Houghton Mifflin edition of <em>Uncle Tom's Cabin</em> is part of an extraordinarily complex publishing history that stretches back over 150 years, dozens of publishers, and hundreds of editions. Parfait's comprehensive account of this history makes clear just how self-conscious Houghton Mifflin were about the physical form of their editions, understanding that the decisions made about paper, binding, typography, and page layout were not merely commercial but cultural—decisions about what kind of object <em>Uncle Tom's Cabin</em> should be, and therefore what kind of text it was. Considering the physical particularities of this edition—its paper, binding, typography, page layout—is not an antiquarian diversion but rather an act of historical and cultural analysis. These physical particularities are choices: they represent decisions about readership, prestige, access, and the afterlives of this highly politicized text. <sup class="fn">5,9</sup></p>
+
+  <figure>
+    <div class="image-block">
+      <img src="images/introduction-page.jpg" alt="Introduction page typography" style="width:100%; height:auto; object-fit:contain;">
+      <figcaption>Typical text page — typography and layout.</figcaption>
+    </div>
+  </figure>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 4: ILLUSTRATIONS
+══════════════════════════════════════════════ -->
+<section id="illustrations">
+  <p class="section-label">§ 4 — Visual Culture</p>
+  <h2>The Illustrations: Borrowed Images, Contested Visions</h2>
+
+  <div class="image-block">
+    <figure>
+      <img src="images/final-illustration.jpg" alt="Key illustration from the 1887 edition" style="width:100%; height:auto; object-fit:contain;">
+      <figcaption>"'An't she a pearl young un? said Tom, holding her from him to take a full-length view.' — Page 29". Seen on first page.</figcaption>
+    </figure>
+  </div>
+
+  <h3>The Illustrations' Hidden History</h3>
+
+  <p>The Houghton Mifflin edition of 1887 has some 105 illustrations. It is a notable visual apparatus for any novel in the period. What it does not tell the reader is that the illustrations are not new. Parfait traces their origin directly: they were first created for a London edition published by Nathaniel Cooke in 1853, with drawings by George Thomas and T. R. Macquoid and engravings by William Thomas. Houghton, Osgood &amp; Co. acquired the copyright to these illustrations from a London agent for ten guineas in January 1879, shortly after the new "Holiday Edition" had already been published using them—an arrangement that Parfait describes as having been negotiated somewhat after the fact. By 1887, the illustrations had been in use in American editions of the novel for eight years, and the Houghton Mifflin edition reproduces them without crediting either the original publication in which they appeared or the artists who made them. It is a significant point in the history of the novel and its illustrations, and points to the extent to which the illustrations had become seen as simply part of what <em>Uncle Tom's Cabin</em> looked like—so naturalized as to require no attribution. <sup class="fn">9</sup></p>
+
+  <p>The British provenance of the illustrations has implications for the racial representation in the 1887 text. Parfait observes of the Thomas and Macquoid illustrations that they were chosen in part because they were "more faithful to the text of the novel than Billings's engravings for Jewett's one-volume edition, since they showed Tom as a young man," and that they were "given their emphasis on domestic happiness shattered by slavery" well suited to Stowe's own stated aims for the novel. At the same time, they are illustrations shaped by British Victorian conventions of depicting the enslaved: sentimental and humanizing in a limited way, but also careful not to show Tom being beaten, and tending to soften or aestheticize the violence at the heart of the novel. This idealization of Tom and the avoidance of any depiction of physical brutality are characteristic of this tradition, and their adoption without comment by an American prestige publisher in the 1880s tells us something about what that publisher assumed its readers could or would want to bear. <sup class="fn">9</sup></p>
+
+  <h3>Illustrations and the "Parlor" Reader</h3>
+
+  <p>In "Parlor Literature," Joan Hedrick contends that "Stowe's writing career began in and responded to a particular readership, a world of middle-class domesticity in which literature was passed from hand to hand within families, read aloud, and judged according to its emotional truth and moral depth, not its craftsmanship." The illustrated edition is precisely this readership made tangible. Illustrations in books were social in function in nineteenth-century fiction. They encouraged communal viewing, gave visual form to characters readers had created in their imaginations, and offered a visual vocabulary for scene and character that made the fiction more accessible to conversation at the dinner table or in the parlour. Illustrations were not primarily beautiful objects but communicative ones. <sup class="fn">7</sup></p>
+
+  <p>By 1887, however, the cultural status of <em>Uncle Tom's Cabin</em> had changed considerably from the world of the parlor that Stowe originally depicted. The literary world, as represented by critics like Henry James, whom Hedrick examines, had begun to make a clear division between "high" literary art and the "low" sentimental fiction that Stowe represented. Parfait documents this shift in critical reputation across the novel's successive editions, showing how the paratext of the Houghton Mifflin editions—their introductions, prefaces, and promotional language—worked increasingly to position <em>Uncle Tom's Cabin</em> as a historical document and moral landmark rather than a living work of literature, compensating for a declining literary reputation with an enhanced historical one. The illustrations in the 1887 <em>Uncle Tom's Cabin</em> participate in this repositioning: by using images first made in 1853 without acknowledging their age or origin, the edition pins the novel visually to a past that is already receding, presenting it as a document of history rather than an intervention in the present. There are no illustrations in this particular copy of the novel save for the engraving on the first page, which is unusual, as the other 1887 editions were fully illustrated. This copy seems to represent a more basic version of the novel from the Houghton Mifflin publishing house, in which the textual appendages were included but the illustrations were omitted. <sup class="fn">7,9</sup></p>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 5: ECOLOGIES
+══════════════════════════════════════════════ -->
+<section id="ecologies">
+  <p class="section-label">§ 5 — Historical Ecologies</p>
+  <h2>The Edition in Its Moment: 1887 and What Came Before It</h2>
+
+  <p>To understand what the 1887 Houghton Mifflin edition was, it helps to understand what it was not. It was not the 1852 first edition—printed in emergency circumstances in which three power presses ran day and night to meet a demand that exceeded all prior American publishing experience, and promoted by Jewett with an energy and invention that Parfait describes as anticipating the modern marketing blitz. By the time of the 1887 edition, the novel was not news. The Civil War that it had been credited with helping to spark was now behind it. Stowe herself was old, having lived to see the institution she had set out to destroy abolished and then to see its afterlives reconstitute themselves in new forms during Reconstruction. Uncle Tom himself had become a cultural shorthand—a figure reproduced in "Tom shows" that traveled the United States into the twentieth century, in commodities ranging from playing cards to candy, and in a theatrical tradition that had by the 1880s developed "double" shows featuring parades and sideshows in which Stowe's characters were simplified into crowd-pleasing caricatures. <sup class="fn">9,10</sup></p>
+
+  <p>In this ecology, the 1887 edition holds a particular and slightly nervous place. Eliza Putnam Heaton, writing for the <em>Washington Post</em> just days before the likely date of this edition's publication, observed that "although one critic has called it 'forgotten,' at a New York club, it is voted by women readers the one they most admire among American writers." The readership of this book had changed. It was no longer the pressing abolitionist tract it had been in 1852, nor yet the children's classic it would become after 1893, when the copyright expired. It held a place in the culture as "the one you should have read, or did read, when you were a child, but not the one everyone is currently reading." <sup class="fn">2</sup></p>
+
+  <p>Parfait's account of the Houghton Mifflin years shows clearly what was at stake in this transitional moment. The firm knew that the copyright would expire in 1893 and prepared deliberately, launching multiple editions at different price points in the early 1890s to saturate the market before competitors could enter it. The 1887 "Popular Edition" was part of this longer strategy of maintaining authoritative control over the text while it still had commercial and cultural value. After 1893, the book was anyone's property—and Parfait documents the flood of cheap editions that followed, from library series to paper-covered pamphlets, many of them recycling the same plates under different imprints with minimal paratextual apparatus. Before 1893, however, it was still Stowe's and Houghton Mifflin's, and the firm's careful management of its editions in these years was an effort to consolidate that authority while time remained. <sup class="fn">9</sup></p>
+
+  <p>That the drawings for the 1887 edition were made in 1853 for a British edition and are now being reprinted without credit more than thirty years later is an ecological complexity that speaks to this moment of transition. The drawings are a form of palimpsest: British Victorian conventions for illustrating American slavery, used by an American publisher of prestige for a readership that was neither the abolitionist readers of 1852 nor the children of 1895. They are illustrations without acknowledged provenance, for a readership in transition. <sup class="fn">9</sup></p>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 6: PROVENANCE
+══════════════════════════════════════════════ -->
+<section id="provenance">
+  <p class="section-label">§ 6 — Provenance</p>
+  <h2>This Copy's History</h2>
+
+  <figure class="image-block">
+    <img src="images/front-inside.jpg" alt="First page showing penciled price" style="width:100%; height:auto; object-fit:contain;">
+    <figcaption>First page of this copy, showing the pencilled price of $20 — the only mark of previous ownership.</figcaption>
+  </figure>
+
+  <p>Every book has a "provenance," a trail of hands that have owned it from printer to current owner. For most popular books published in the 19th century, it is hard to know much about this trail. This book has none of the usual signs of ownership: no name in the front, no bookplate, no library stamp. It has only one sign of ownership history: the price, penciled in on the front page. It was priced at $20. This was almost certainly a used bookstore price. It was written by a bookseller, not a reader. The lack of personal inscriptions also speaks to the book's history. This is a book that was passed from hand to hand without leaving a name behind.</p>
+
+  <p>The book's provenance is one of family inheritance, passed down to me from my mother's uncle, who spent much of his life collecting old books. The price on the first page, $20 in pencil, likely indicates that he bought it at a second-hand store, probably between 1975 and 1990, a price that in adjusted dollars translates to between $50 and $100. His collection, now partly in our possession, also includes 19th-century editions of Rudyard Kipling, Herman Melville, and other literary luminaries of the day. The act of collecting and re-gifting books is also part of the ecology of this object, and one that tells us as much about our values for print culture as the original publication did for the Victorians. Parfait observes that many copies of the illustrated Houghton Mifflin editions were treasured and handed down within families, sometimes with inscriptions, sometimes with newspaper clippings about the novel pasted onto the flyleaves by successive owners. This copy has neither, but its survival in a private collection is its own form of evidence: a book kept because it mattered, even if no one thought to say why. <sup class="fn">9</sup></p>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 7: REFLECTION
+══════════════════════════════════════════════ -->
+<section id="reflection">
+  <p class="section-label">§ 7 — Reflection</p>
+  <h2>An Analogue Object in a Digital Exhibition</h2>
+
+  <div class="reflection-box">
+    <p>There is something paradoxical in presenting a book of the 19th century, a thing characterized by its individual physical presence, in the form of a virtual exhibition. In his essay on the work of art in the age of mechanical reproduction, Walter Benjamin wrote that "the technique of reproduction detaches the reproduced object from the domain of tradition. By making many reproductions it substitutes a plurality of copies for a unique existence." In making this virtual exhibition, I have done precisely that—taken photographs of a unique object, uploaded them to the web, arranged them in a webpage, and made them accessible to an indeterminate number of viewers who will never touch the book. <sup class="fn">4</sup></p>
+
+    <p>Yet what Benjamin calls "withering"—the aura of the work—is what this exhibition has allowed me to see most clearly. It was in the process of physical examination, of holding the book to the light to read the paper, of tracing a finger over the grain of the cloth binding, of considering the placement of the engravings in relation to the text—that the most fruitful questions were posed. The digital format allows me to share the findings of this process with a reader who is unable to access the original directly. It also makes the limitations of the digital format seem unusually clear—a picture of a book spine cannot communicate the weight of the book, the smell of its paper, or the resistance of the spine as it opens.</p>
+
+    <p>The form I have chosen, the linear illustrated web page, is also part of the tradition of the exhibition catalogue, which is the kind of form that accompanies and augments the experience of viewing an object in real time, rather than replacing it. Like the illustrated Victorian edition, it presents image and text in a particular order, an order which is intended to take the reader through a particular set of ideas. The difference, of course, is that the order of the Victorian edition was determined by the physical arrangement of its pages, while the exhibition can be viewed in any order, and can be linked to other sources. Whether or not this is an improvement, or simply another, equally limited, relationship with knowledge, is something the course has taught me not to answer too hastily.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     BIBLIOGRAPHY
+══════════════════════════════════════════════ -->
+<section id="bibliography" class="bibliography">
+  <p class="section-label">Bibliography</p>
+  <h2>Works Cited and Consulted</h2>
+
+  <h3>Primary Sources</h3>
+  <ol>
+    <li>
+      <span class="bib-label">Primary</span>
+      Stowe, Harriet Beecher. <em>Uncle Tom's Cabin; or, Life Among the Lowly.</em> Boston: Houghton, Mifflin and Company; Cambridge: Riverside Press, 1887.
+    </li>
+    <li>
+      <span class="bib-label">Primary</span>
+      Heaton, Eliza Putnam. "Whims and Fancies." <em>The Washington Post,</em> January 16, 1887.
+    </li>
+    <li>
+      <span class="bib-label">Primary</span>
+      Jewett, John P. Advertisement: "Extraordinary Demand for 'Uncle Tom's Cabin.'" <em>Norton's Literary Gazette,</em> 1852.
+    </li>
+  </ol>
+
+  <h3>Course Readings</h3>
+  <ol start="4">
+    <li>
+      <span class="bib-label">Course</span>
+      Benjamin, Walter. "The Work of Art in the Age of Mechanical Reproduction." In <em>Illuminations: Essays and Reflections,</em> edited by Hannah Arendt. New York: Houghton Mifflin Harcourt, 1968. Pages 180–201.
+    </li>
+    <li>
+      <span class="bib-label">Course</span>
+      Goldsby, Jacqueline, and Meredith L. McGill. "What is 'Black' about Black Bibliography?" <em>Papers of the Bibliographical Society of America</em> 116, no. 2 (June 2022): 161–195.
+    </li>
+  </ol>
+
+  <h3>Secondary Sources</h3>
+  <ol start="6">
+    <li>
+      <span class="bib-label">Secondary</span>
+      Bode, Katherine. "Beyond the Book: Publishing in the Nineteenth Century." In <em>Reading by Numbers: Recalibrating the Literary Field.</em> London: Anthem Press, 2012.
+    </li>
+    <li>
+      <span class="bib-label">Secondary</span>
+      Hedrick, Joan D. "Parlor Literature: Harriet Beecher Stowe and the Question of 'Great Women Artists.'" <em>Signs</em> 17, no. 2 (Winter 1992): 275–303.
+    </li>
+    <li>
+      <span class="bib-label">Secondary</span>
+      McVey, Sheila. "Nineteenth Century America: Publishing in a Developing Country." <em>The Annals of the American Academy of Political and Social Science</em> 421 (September 1975): 67–80.
+    </li>
+    <li>
+      <span class="bib-label">Secondary</span>
+      Parfait, Claire. <em>The Publishing History of 'Uncle Tom's Cabin,' 1852–2002.</em> Aldershot: Ashgate, 2007.
+    </li>
+    <li>
+      <span class="bib-label">Secondary</span>
+      Patkus, Ronald D., and Mary C. Schlosser. "Aspects of the Publishing History of Uncle Tom's Cabin, 1851–1900." Archives &amp; Special Collections Library, Vassar College. Exhibition catalogue, 2001–2005.
+    </li>
+    <li>
+      <span class="bib-label">Secondary</span>
+      Winship, Michael. "'The Greatest Book of Its Kind': A Publishing History of 'Uncle Tom's Cabin.'" <em>Proceedings of the American Antiquarian Society</em> 109 (1999): 309–332.
+    </li>
+    <li>
+      <span class="bib-label">Secondary</span>
+      Winship, Michael. "Uncle Tom's Cabin: History of the Book in the 19th-Century United States." University of Virginia.
+    </li>
+  </ol>
+</section>
+
+</main>
+
+<footer>
+  <p>Online Exhibition · History of the Book · [Course Name and Number] · Lillie Adamson · [Term/Year]</p>
+  <p style="margin-top:0.4rem; opacity:0.7;">All photographs of the 1887 edition by the author. Design inspired by 19th-century book aesthetics.</p>
+</footer>
+
+</body>
+</html>
